@@ -15,6 +15,7 @@ class ViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
         if let startWordsPath = Bundle.main.path(forResource: "start", ofType: "txt") {
             if let startWords = try? String(contentsOfFile: startWordsPath ) {
                 allWords = startWords.components(separatedBy: "\n")
@@ -25,6 +26,19 @@ class ViewController: UITableViewController {
         }
         startGame()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func promptForAnswer() {
+        let ac = UIAlertController(title: "Enter answer...", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned self, ac] (action: UIAlertAction) in
+            let answer = ac.textField![0]
+            self.submit(answer: answer.text!)
+            
+        }
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+        
     }
     
     func startGame() {
